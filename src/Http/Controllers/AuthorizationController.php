@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 use Laminas\Diactoros\Response as Psr7Response;
 use Laravel\Passport\Bridge\User;
 use Laravel\Passport\ClientRepository;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\Passport;
-use Laravel\Passport\TokenRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -50,13 +50,13 @@ class AuthorizationController
      * @param  \Psr\Http\Message\ServerRequestInterface  $psrRequest
      * @param  \Illuminate\Http\Request  $request
      * @param  \Laravel\Passport\ClientRepository  $clients
-     * @param  \Laravel\Passport\TokenRepository  $tokens
+     * @param  TokenRepositoryInterface  $tokens
      * @return \Illuminate\Http\Response
      */
     public function authorize(ServerRequestInterface $psrRequest,
                               Request $request,
                               ClientRepository $clients,
-                              TokenRepository $tokens)
+                              TokenRepositoryInterface $tokens)
     {
         $authRequest = $this->withErrorHandling(function () use ($psrRequest) {
             return $this->server->validateAuthorizationRequest($psrRequest);

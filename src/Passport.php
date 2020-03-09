@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateInterval;
 use DateTimeInterface;
 use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
 use Mockery;
 use Psr\Http\Message\ServerRequestInterface;
@@ -438,10 +439,10 @@ class Passport
 
         app()->instance(ResourceServer::class, $mock);
 
-        $mock = Mockery::mock(TokenRepository::class);
+        $mock = Mockery::mock(TokenRepositoryInterface::class);
         $mock->shouldReceive('find')->andReturn($token);
 
-        app()->instance(TokenRepository::class, $mock);
+        app()->instance(TokenRepositoryInterface::class, $mock);
 
         return $client;
     }

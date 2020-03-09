@@ -15,8 +15,8 @@ use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 use Laminas\Diactoros\UploadedFileFactory;
 use Laravel\Passport\ClientRepository;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\Passport;
-use Laravel\Passport\TokenRepository;
 use Laravel\Passport\TransientToken;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
@@ -41,7 +41,7 @@ class TokenGuard
     /**
      * The token repository instance.
      *
-     * @var \Laravel\Passport\TokenRepository
+     * @var TokenRepositoryInterface
      */
     protected $tokens;
 
@@ -64,14 +64,14 @@ class TokenGuard
      *
      * @param  \League\OAuth2\Server\ResourceServer  $server
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
-     * @param  \Laravel\Passport\TokenRepository  $tokens
+     * @param  TokenRepositoryInterface  $tokens
      * @param  \Laravel\Passport\ClientRepository  $clients
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
      */
     public function __construct(ResourceServer $server,
                                 UserProvider $provider,
-                                TokenRepository $tokens,
+                                TokenRepositoryInterface $tokens,
                                 ClientRepository $clients,
                                 Encrypter $encrypter)
     {
