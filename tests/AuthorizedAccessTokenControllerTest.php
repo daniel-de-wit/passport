@@ -4,9 +4,9 @@ namespace Laravel\Passport\Tests;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\Http\Controllers\AuthorizedAccessTokenController;
 use Laravel\Passport\Token;
-use Laravel\Passport\TokenRepository;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthorizedAccessTokenControllerTest extends TestCase
 {
     /**
-     * @var \Mockery\Mock|\Laravel\Passport\TokenRepository
+     * @var \Mockery\Mock|TokenRepositoryInterface
      */
     protected $tokenRepository;
 
@@ -25,7 +25,7 @@ class AuthorizedAccessTokenControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->tokenRepository = m::mock(TokenRepository::class);
+        $this->tokenRepository = m::mock(TokenRepositoryInterface::class);
         $this->controller = new AuthorizedAccessTokenController($this->tokenRepository);
     }
 

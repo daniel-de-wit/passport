@@ -3,8 +3,9 @@
 namespace Laravel\Passport;
 
 use Carbon\Carbon;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 
-class TokenRepository
+class TokenRepository implements TokenRepositoryInterface
 {
     /**
      * Creates a new Access Token.

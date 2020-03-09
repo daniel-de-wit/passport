@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateInterval;
 use DateTimeInterface;
 use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
 use Mockery;
 
