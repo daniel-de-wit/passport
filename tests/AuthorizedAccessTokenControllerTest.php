@@ -4,7 +4,9 @@ namespace Laravel\Passport\Tests;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\Http\Controllers\AuthorizedAccessTokenController;
+use Laravel\Passport\RefreshTokenRepository;
 use Laravel\Passport\Token;
 use Laravel\Passport\TokenRepository;
 use Mockery as m;
@@ -14,9 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthorizedAccessTokenControllerTest extends TestCase
 {
     /**
-     * @var \Mockery\Mock|\Laravel\Passport\TokenRepository
+     * @var \Mockery\Mock|TokenRepositoryInterface
      */
     protected $tokenRepository;
+
+    /**
+     * @var \Mockery\Mock|\Laravel\Passport\RefreshTokenRepository
+     */
+    protected $refreshTokenRepository;
 
     /**
      * @var AuthorizedAccessTokenController
@@ -25,8 +32,9 @@ class AuthorizedAccessTokenControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->tokenRepository = m::mock(TokenRepository::class);
-        $this->controller = new AuthorizedAccessTokenController($this->tokenRepository);
+        $this->tokenRepository = m::mock(TokenRepositoryInterface::class);
+        $this->refreshTokenRepository = m::mock(RefreshTokenRepository::class);
+        $this->controller = new AuthorizedAccessTokenController($this->tokenRepository, $this->refreshTokenRepository);
     }
 
     protected function tearDown(): void
@@ -78,6 +86,7 @@ class AuthorizedAccessTokenControllerTest extends TestCase
         $token1->shouldReceive('revoke')->once();
 
         $this->tokenRepository->shouldReceive('findForUser')->andReturn($token1);
+        $this->refreshTokenRepository->shouldReceive('revokeRefreshTokensByAccessTokenId')->once();
 
         $request->setUserResolver(function () {
             $user = m::mock();

@@ -8,6 +8,7 @@ use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 use Laminas\Diactoros\UploadedFileFactory;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\TokenRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
@@ -25,7 +26,7 @@ abstract class CheckCredentials
     /**
      * Token Repository.
      *
-     * @var \Laravel\Passport\TokenRepository
+     * @var TokenRepositoryInterface
      */
     protected $repository;
 
@@ -33,10 +34,10 @@ abstract class CheckCredentials
      * Create a new middleware instance.
      *
      * @param  \League\OAuth2\Server\ResourceServer  $server
-     * @param  \Laravel\Passport\TokenRepository  $repository
+     * @param  TokenRepositoryInterface  $repository
      * @return void
      */
-    public function __construct(ResourceServer $server, TokenRepository $repository)
+    public function __construct(ResourceServer $server, TokenRepositoryInterface $repository)
     {
         $this->server = $server;
         $this->repository = $repository;

@@ -5,6 +5,7 @@ namespace Laravel\Passport\Http\Controllers;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\Passport;
 use Laravel\Passport\TokenRepository;
 
@@ -13,7 +14,7 @@ class PersonalAccessTokenController
     /**
      * The token repository implementation.
      *
-     * @var \Laravel\Passport\TokenRepository
+     * @var TokenRepositoryInterface
      */
     protected $tokenRepository;
 
@@ -27,11 +28,11 @@ class PersonalAccessTokenController
     /**
      * Create a controller instance.
      *
-     * @param  \Laravel\Passport\TokenRepository  $tokenRepository
+     * @param  TokenRepositoryInterface  $tokenRepository
      * @param  \Illuminate\Contracts\Validation\Factory  $validation
      * @return void
      */
-    public function __construct(TokenRepository $tokenRepository, ValidationFactory $validation)
+    public function __construct(TokenRepositoryInterface $tokenRepository, ValidationFactory $validation)
     {
         $this->validation = $validation;
         $this->tokenRepository = $tokenRepository;

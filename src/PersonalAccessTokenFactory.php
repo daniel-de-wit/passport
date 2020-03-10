@@ -4,6 +4,7 @@ namespace Laravel\Passport;
 
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Lcobucci\JWT\Parser as JwtParser;
 use League\OAuth2\Server\AuthorizationServer;
 
@@ -26,7 +27,7 @@ class PersonalAccessTokenFactory
     /**
      * The token repository instance.
      *
-     * @var \Laravel\Passport\TokenRepository
+     * @var TokenRepositoryInterface
      */
     protected $tokens;
 
@@ -42,13 +43,13 @@ class PersonalAccessTokenFactory
      *
      * @param  \League\OAuth2\Server\AuthorizationServer  $server
      * @param  \Laravel\Passport\ClientRepository  $clients
-     * @param  \Laravel\Passport\TokenRepository  $tokens
+     * @param  TokenRepositoryInterface  $tokens
      * @param  \Lcobucci\JWT\Parser  $jwt
      * @return void
      */
     public function __construct(AuthorizationServer $server,
                                 ClientRepository $clients,
-                                TokenRepository $tokens,
+                                TokenRepositoryInterface $tokens,
                                 JwtParser $jwt)
     {
         $this->jwt = $jwt;

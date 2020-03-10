@@ -2,6 +2,7 @@
 
 namespace Laravel\Passport;
 
+use App\Repositories\Auth\TokenRepository;
 use DateInterval;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\RequestGuard;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Bridge\PersonalAccessGrant;
 use Laravel\Passport\Bridge\RefreshTokenRepository;
+use Laravel\Passport\Contracts\TokenRepositoryInterface;
 use Laravel\Passport\Guards\TokenGuard;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
@@ -51,6 +53,14 @@ class PassportServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/js/components' => base_path('resources/js/components/passport'),
             ], 'passport-components');
 
+            $this->publishes([
+                __DIR__.'/../database/factories' => database_path('factories'),
+            ], 'passport-factories');
+
+            $this->publishes([
+                __DIR__.'/../config/passport.php' => config_path('passport.php'),
+            ], 'passport-config');
+
             $this->commands([
                 Console\InstallCommand::class,
                 Console\ClientCommand::class,
@@ -87,6 +97,7 @@ class PassportServiceProvider extends ServiceProvider
         $this->registerResourceServer();
         $this->registerGuard();
         $this->offerPublishing();
+        $this->app->singleton(TokenRepositoryInterface::class, \Laravel\Passport\TokenRepository::class);
     }
 
     /**
@@ -272,7 +283,7 @@ class PassportServiceProvider extends ServiceProvider
             return (new TokenGuard(
                 $this->app->make(ResourceServer::class),
                 Auth::createUserProvider($config['provider']),
-                $this->app->make(TokenRepository::class),
+                $this->app->make(TokenRepositoryInterface::class),
                 $this->app->make(ClientRepository::class),
                 $this->app->make('encrypter')
             ))->user($request);
